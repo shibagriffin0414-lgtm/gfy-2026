@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Daily Schedule & Planner 🌟</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Quicksand & Nunito for a cute, soft look -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            yellow: '#FDE047',
+                            yellowLight: '#FEF9C3',
+                            yellowDark: '#D97706',
+                            blue: '#3B82F6',
+                            blueLight: '#E0F2FE',
+                            blueDark: '#1E40AF',
+                            cream: '#FFFDF5',
+                            softBg: '#F8FAFC'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Quicksand', 'Nunito', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #FFFDF5;
+            color: #334155;
+            font-family: 'Quicksand', 'Nunito', sans-serif;
+        }
+        .cute-card {
+            background: #FFFFFF;
+            border: 2px solid #FEF08A;
+            box-shadow: 0 10px 25px -5px rgba(234, 179, 8, 0.1), 0 8px 10px -6px rgba(59, 130, 246, 0.05);
+            border-radius: 1.5rem;
+        }
+        .cute-card-blue {
+            background: #FFFFFF;
+            border: 2px solid #BFDBFE;
+            box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.1);
+            border-radius: 1.5rem;
+        }
+        .cute-badge {
+            border-radius: 9999px;
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        .phone-ban-banner {
+            background: linear-gradient(135deg, #FFE4E6 0%, #FECDD3 100%);
+            border: 2px dashed #F43F5E;
+            color: #9F1239;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FEF9C3;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FACC15;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #EAB308;
+        }
+        .tab-btn.active {
+            background-color: #3B82F6;
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-12">
+
+    <!-- Header Banner -->
+    <header class="bg-gradient-to-r from-amber-200 via-yellow-100 to-sky-200 border-b-4 border-yellow-300 px-4 py-6 shadow-sm sticky top-0 z-40 backdrop-blur-md bg-opacity-90">
+        <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-amber-400 text-white flex items-center justify-center text-2xl shadow-md transform rotate-3">
+                    <i class="fa-solid fa-calendar-star"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-extrabold text-slate-800 tracking-tight flex items-center gap-2">
+                        gfy@2026
+                    </h1>
+                </div>
+            </div>
+
+            <!-- View Navigation Tabs -->
+            <div class="flex bg-white/80 p-1.5 rounded-2xl border-2 border-yellow-200 shadow-inner gap-1">
+                <button onclick="switchTab('daily')" id="tab-daily" class="tab-btn active px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-clock"></i> Today's Schedule
+                </button>
+                <button onclick="switchTab('timetable')" id="tab-timetable" class="tab-btn px-4 py-2 rounded-xl text-sm font-bold text-slate-600 hover:text-blue-600 transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-table-cells"></i> 5D Timetable
+                </button>
+                <button onclick="switchTab('calendar')" id="tab-calendar" class="tab-btn px-4 py-2 rounded-xl text-sm font-bold text-slate-600 hover:text-blue-600 transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-calendar-days"></i> School Calendar
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 mt-6">
+
+        <!-- DAILY SCHEDULE VIEW -->
+        <div id="view-daily" class="space-y-6">
+            
+            <!-- Date Controller Card -->
+            <div class="cute-card p-5 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-start">
+                    <button onclick="changeDate(-1)" class="w-10 h-10 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-800 flex items-center justify-center font-bold transition-transform active:scale-95 shadow-sm">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    
+                    <div class="text-center">
+                        <div id="display-date-str" class="text-xl md:text-2xl font-extrabold text-slate-800">Loading...</div>
+                        <div class="flex items-center justify-center gap-2 mt-1">
+                            <span id="display-week-cycle" class="cute-badge bg-blue-100 text-blue-800 text-xs border border-blue-200">
+                                Week 1
+                            </span>
+                            <span id="display-school-status" class="cute-badge bg-amber-100 text-amber-800 text-xs border border-amber-200">
+                                Regular Day
+                            </span>
+                        </div>
+                    </div>
+
+                    <button onclick="changeDate(1)" class="w-10 h-10 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-800 flex items-center justify-center font-bold transition-transform active:scale-95 shadow-sm">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <!-- Date Picker & Quick Actions -->
+                <div class="flex items-center gap-3 w-full md:w-auto justify-center">
+                    <input type="date" id="date-picker" onchange="onDatePicked(this.value)" class="px-3 py-2 rounded-xl border-2 border-yellow-300 bg-yellow-50/50 font-bold text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400">
+                    <button onclick="jumpToToday()" class="px-3.5 py-2 rounded-xl bg-yellow-400 hover:bg-yellow-500 text-slate-900 font-extrabold text-sm shadow-sm transition-transform active:scale-95 flex items-center gap-1.5">
+                        <i class="fa-solid fa-house-user"></i> Today
+                    </button>
+                    <button onclick="toggleCycleOverride()" title="Toggle Week 1 / Week 2 timetable manually if needed" class="px-3 py-2 rounded-xl bg-sky-100 hover:bg-sky-200 text-sky-800 font-bold text-xs border border-sky-300 transition-all">
+                        <i class="fa-solid fa-rotate"></i> Switch Week
+                    </button>
+                </div>
+            </div>
+
+            <!-- School Event Mention Banner (if any) -->
+            <div id="school-event-banner" class="hidden p-4 rounded-2xl bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md border-2 border-blue-400 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-xl shrink-0">
+                    <i class="fa-solid fa-bullhorn animate-bounce"></i>
+                </div>
+                <div class="flex-grow">
+                    <div class="text-xs font-bold uppercase tracking-wider text-blue-100">School Event Today</div>
+                    <div id="school-event-text" class="text-base font-extrabold">Event Name</div>
+                </div>
+            </div>
+
+            <!-- Special Holiday or Sports Day Blank Notice (if blank day) -->
+            <div id="blank-day-notice" class="hidden p-6 rounded-3xl bg-amber-50 border-2 border-dashed border-amber-300 text-center space-y-2">
+                <div class="text-4xl">🎉</div>
+                <h3 id="blank-day-title" class="text-xl font-extrabold text-amber-900">School Holiday / Day Off</h3>
+                <p id="blank-day-sub" class="text-sm text-amber-700 font-semibold">No regular school timetable today!</p>
+            </div>
+
+            <!-- Progress Tracker -->
+            <div class="bg-white p-4 rounded-2xl border-2 border-yellow-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs font-bold text-slate-500 uppercase">Daily Progress</div>
+                        <div id="progress-text" class="text-sm font-extrabold text-slate-800">0 of 0 activities completed</div>
+                    </div>
+                </div>
+                <div class="w-full md:w-64 bg-slate-100 rounded-full h-3.5 overflow-hidden border border-slate-200">
+                    <div id="progress-bar" class="bg-gradient-to-r from-yellow-400 to-emerald-400 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Main Timeline Cards Container -->
+            <div id="timeline-container" class="space-y-3">
+                <!-- Javascript will inject daily time blocks here -->
+            </div>
+
+            <!-- Sticky Daily Goals Pad -->
+            <div class="cute-card p-5 bg-amber-50/60 border-2 border-yellow-300">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-extrabold text-slate-800 text-base flex items-center gap-2">
+                        <i class="fa-solid fa-note-sticky text-amber-500"></i> Daily Notes & Goals
+                    </h3>
+                    <span class="text-xs text-slate-500 font-bold">Auto-saved</span>
+                </div>
+                <textarea id="daily-notes-input" oninput="saveDailyNotes()" rows="3" placeholder="Write homework reminders, exams to prepare for, or archery targets here..." class="w-full p-3 rounded-xl border-2 border-yellow-200 bg-white font-medium text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-yellow-400 resize-none"></textarea>
+            </div>
+
+        </div>
+
+        <!-- 5D TIMETABLE TAB VIEW -->
+        <div id="view-timetable" class="hidden space-y-6">
+            <div class="cute-card p-6">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h2 class="text-2xl font-extrabold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-graduation-cap text-blue-500"></i> Class 5D Official Timetable
+                        </h2>
+                        <p class="text-sm font-semibold text-slate-500">Form Teachers: Law Oi Lun & Chan Ching Laam Jennes</p>
+                    </div>
+
+                    <!-- Week Toggle -->
+                    <div class="flex bg-slate-100 p-1 rounded-xl border border-slate-200">
+                        <button onclick="setTimetableWeek(1)" id="tt-btn-w1" class="px-4 py-2 rounded-lg text-sm font-extrabold transition-all bg-blue-500 text-white shadow-sm">
+                            Week 1
+                        </button>
+                        <button onclick="setTimetableWeek(2)" id="tt-btn-w2" class="px-4 py-2 rounded-lg text-sm font-extrabold transition-all text-slate-600 hover:text-blue-600">
+                            Week 2
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Vertical Timetable Days List -->
+                <div id="timetable-days-container" class="space-y-6">
+                    <!-- Javascript populates vertical day blocks -->
+                </div>
+
+                <!-- Elective Info Footer -->
+                <div class="mt-6 p-4 rounded-xl bg-sky-50 border border-sky-200 text-xs text-sky-900 space-y-1">
+                    <div class="font-extrabold text-sm text-sky-950 mb-1"><i class="fa-solid fa-circle-info"></i> Elective Block Details:</div>
+                    <p><strong>Block 2 Elective:</strong> BAFS (Accounting) / Chinese History / Economics / ICT / PE (HKDSE) / Visual Arts / Physics</p>
+                    <p><strong>Block 3 Elective:</strong> BAFS (Accounting) / Biology / Chemistry / DAT / Economics / Geography / ICT</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCHOOL CALENDAR TAB VIEW -->
+        <div id="view-calendar" class="hidden space-y-6">
+            <div class="cute-card p-6">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h2 class="text-2xl font-extrabold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-calendar-days text-amber-500"></i> LSC Academic Calendar (2026-2027)
+                        </h2>
+                        <p class="text-sm font-semibold text-slate-500">Categorized List of Holidays, Assemblies, Mass & Exams</p>
+                    </div>
+
+                    <!-- Category Filter Buttons -->
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="filterCalendar('all')" class="cal-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-400 text-slate-900">All Events</button>
+                        <button onclick="filterCalendar('holiday')" class="cal-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700">Holidays</button>
+                        <button onclick="filterCalendar('sports')" class="cal-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700">Sports Gala</button>
+                        <button onclick="filterCalendar('exam')" class="cal-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700">Exams</button>
+                        <button onclick="filterCalendar('religious')" class="cal-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700">Mass/Spiritual</button>
+                    </div>
+                </div>
+
+                <!-- Calendar Events List -->
+                <div id="calendar-events-list" class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[600px] overflow-y-auto pr-2">
+                    <!-- Javascript populates calendar events -->
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        
+        // Current state date
+        let currentDate = new Date(); // Defaults to today
+        let activeTab = 'daily';
+        let timetableWeekView = 1;
+        let calendarFilter = 'all';
+
+        // LSC School Calendar Database (2026-2027)
+        // Note: Dates in format YYYY-MM-DD
+        const HOLIDAYS = {
+            '2026-09-26': 'The day following the Mid-Autumn Festival',
+            '2026-10-01': 'National Day',
+            '2026-10-19': 'The day following Chung Yeung Festival',
+            '2026-11-26': 'Staff Development Day 1',
+            '2026-12-14': 'Discretionary Holiday 1',
+            '2027-02-22': 'Discretionary Holiday 2',
+            '2027-04-05': 'The day following Ching Ming Festival',
+            '2027-05-01': 'Labour Day',
+            '2027-05-13': 'Birthday of the Buddha',
+            '2027-05-14': 'Feast Day of La Salle',
+            '2027-05-25': 'Staff Development Day 2',
+            '2027-06-09': 'Tuen Ng Festival',
+            '2027-07-01': 'HKSAR Establishment Day'
+        };
+
+        // Multi-day Holidays Range
+        const HOLIDAY_RANGES = [
+            { start: '2026-12-24', end: '2027-01-03', title: 'Christmas & New Year Holidays' },
+            { start: '2027-02-04', end: '2027-02-13', title: 'Chinese New Year Holidays' },
+            { start: '2027-03-25', end: '2027-04-01', title: 'Easter Holidays' },
+            { start: '2027-07-13', end: '2027-08-31', title: 'Summer Holidays' }
+        ];
+
+        // Sports Day Heats & Finals / Swimming Gala (Blank school timetable days)
+        const BLANK_SPORTS_DAYS = {
+            '2026-09-18': 'Swimming Gala (Heats)',
+            '2026-09-25': 'Swimming Gala (Finals)',
+            '2026-11-25': 'Sports Day (Heats)',
+            '2026-12-02': 'Sports Day (Finals)'
+        };
+
+        // Other School Events (Simply mentioned next to the date)
+        const OTHER_EVENTS = {
+            '2026-09-01': 'School Opening Assemblies',
+            '2026-09-02': 'School Opening Mass',
+            '2026-09-03': 'SA Introductory Sessions',
+            '2026-09-07': 'SA Election / Club Proposal Submission',
+            '2026-09-08': 'Photo-taking',
+            '2026-09-10': 'SA Inauguration',
+            '2026-09-16': 'Clubs Promotion Fair',
+            '2026-09-17': 'Clubs Promotion Fair',
+            '2026-09-24': '1st Form Assembly',
+            '2026-09-25': 'OLE Day',
+            '2026-10-06': 'Monthly Mass',
+            '2026-10-15': 'Educational Outing',
+            '2026-10-16': 'Inter-school Swimming (Day 1)',
+            '2026-10-22': '3rd Form Assembly & F.5 Spiritual Day',
+            '2026-10-23': 'Inter-school Swimming (Day 2)',
+            '2026-10-28': 'Dress Casual Day',
+            '2026-11-05': '5th Form Assembly',
+            '2026-11-10': 'Monthly Mass',
+            '2026-11-13': 'Speech Day',
+            '2026-11-14': 'Fun Day (Society of St. Vincent de Paul)',
+            '2026-11-15': 'Caritas Charity Bazaar (Kowloon)',
+            '2026-11-18': 'Inter-school Cross Country',
+            '2026-11-27': 'Talent Quest (Finals)',
+            '2026-12-03': 'Thanksgiving Mass for the 95th Anniversary',
+            '2026-12-18': 'Christmas Mass',
+            '2026-12-21': 'Christmas Class Party & Christmas Ball',
+            '2026-12-24': 'Christmas Eve Vigil Mass',
+            '2027-02-18': 'Inter-school Athletics (Day 1)',
+            '2027-02-20': 'F.1-F.5 Parent-Teacher Meeting',
+            '2027-02-23': 'Inter-school Athletics (Day 2)',
+            '2027-02-25': 'Spring Concert',
+            '2027-02-26': 'Inter-school Athletics (Day 3)',
+            '2027-02-28': 'Drama & Dance Showcase',
+            '2027-03-02': 'F.5 Geography Field Trip',
+            '2027-03-09': 'Reconciliation Service',
+            '2027-03-18': '8th Form Assembly',
+            '2027-04-29': '10th Form Assembly',
+            '2027-05-06': 'Special Assembly (Kick-off Founder\'s Week & 95th Anniv.)',
+            '2027-05-11': 'Feast Day Mass',
+            '2027-05-20': 'Cultural Prize-Giving Ceremony',
+            '2027-05-24': '95th Anniversary Concert',
+            '2027-05-27': 'Sports Prize-Giving Ceremony',
+            '2027-06-30': 'Class Retreat',
+            '2027-07-12': 'End of Year Assembly & Report Cards'
+        };
+
+        // Multi-day Exam / Assessment Periods
+        const EXAM_RANGES = [
+            { start: '2026-10-28', end: '2026-11-04', title: 'Term 1 Assessment Week' },
+            { start: '2026-12-15', end: '2026-12-16', title: 'F.1-F.5 Mid-year Exam (Listening)' },
+            { start: '2027-01-04', end: '2027-01-20', title: 'F.1-F.5 Mid-year Examination' },
+            { start: '2027-01-25', end: '2027-01-26', title: 'F.1-F.5 Mark Checking Day' },
+            { start: '2027-04-14', end: '2027-04-21', title: 'Term 2 Assessment Week' },
+            { start: '2027-05-06', end: '2027-05-12', title: 'Founder\'s Week' },
+            { start: '2027-06-03', end: '2027-06-25', title: 'F.1-F.5 Final Examination' },
+            { start: '2027-06-28', end: '2027-07-02', title: 'Exchange Week' },
+            { start: '2027-07-05', end: '2027-07-06', title: 'F.1-F.5 Mark Checking Day' },
+            { start: '2027-07-07', end: '2027-07-09', title: 'Class Retreat' }
+        ];
+
+        const TIMETABLE_DATA = {
+            1: { // Week 1
+                Mon: [
+                    { time: '08:00 - 08:30', name: 'Form Teacher Period', detail: 'Law Oi Lun' },
+                    { time: '08:30 - 09:10', name: 'Mathematics', detail: 'Math Teachers' },
+                    { time: '09:10 - 09:50', name: 'Mathematics', detail: 'Math Teachers' },
+                    { time: '09:50 - 10:10', name: 'Morning Recess', detail: 'Break' },
+                    { time: '10:10 - 10:50', name: 'BAFS', detail: 'Law Oi Lun' },
+                    { time: '10:50 - 11:30', name: 'CSD', detail: 'Chu Ka Yun Catherine' },
+                    { time: '11:30 - 12:10', name: 'English Language', detail: 'Chan Ching Laam Jennes' },
+                    { time: '12:10 - 13:25', name: 'Lunch Break', detail: 'Lunch' },
+                    { time: '13:25 - 14:05', name: 'Block 3 Elective', detail: 'Subject Teachers' },
+                    { time: '14:05 - 14:45', name: 'Block 3 Elective', detail: 'Subject Teachers' },
+                    { time: '14:45 - 15:25', name: 'Visual Arts', detail: 'Lee Hong Wai' }
+                ],
+                Tue: [
+                    { time: '08:00 - 08:30', name: 'Form Teacher Period', detail: 'Chan Ching Laam Jennes' },
+                    { time: '08:30 - 09:10', name: 'Chinese Language', detail: 'Chan Ka Wai' },
+                    { time: '09:10 - 09:50', name: 'Block 2 Elective', detail: 'Subject Teachers' },
+                    { time: '09:50 - 10:10', name: 'Morning Recess', detail: 'Break' },
+                    { time: '10:10 - 10:50', name: 'Block 3 Elective', detail: 'Subject Teachers' },
+                    { time: '10:50 - 11:30', name: 'BAFS', detail: 'Law Oi Lun' },
+                    { time: '11:30 - 12:10', name: 'BAFS', detail: 'Law Oi Lun' },
+                    { time: '12:10 - 13:25', name: 'Lunch Break', detail: 'Lunch' },
+                    { time: '13:25 - 14:05', name: 'English Language', detail: 'Chan Ching Laam Jennes' },
+                    { time: '14:05 - 14:45', name: 'Mathematics', detail: 'Math Teachers' },
+                    { time: '14:45 - 15:25', name: 'Mathematics', detail: 'Math Teachers' }
+                ],
+                Wed: [
+                    { time: '08:00 - 08:40', name: 'Chinese Language', detail: 'Chan Ka Wai' },
+                    { time: '08:40 - 09:20', name: 'Chinese Language', detail: 'Chan Ka Wai' },
+                    { time: '09:20 - 10:00', name: 'Chinese Language', detail: 'Chan Ka Wai' },
+                    { time: '10:00 - 10:20', name: 'Morning Recess', detail: 'Break' },
+                    { time: '10:20 - 11:00', name: 'Block 2 Elective', detail: 'Subject Teachers' },
+                    { time: '11:00 - 11:40', name: 'Block 2 Elective', detail: 'Subject Teachers' },
+                    { time: '11:40 - 12:20', name: 'Block 3 Elective', detail: 'Subject Teachers' },
+                    { time: '12:20 - 13:35', name: 'Lunch Break', detail: 'Lunch' },
+                    { time: '13:35 - 14:15', name: 'Mathematics', detail: 'Math Teachers' },
+                    { time: '14:15 - 14:50', name: 'CSD', detail: 'Chu Ka Yun Catherine' },
+                    { time: '14:50 - 15:25', name: 'English Language', detail: 'Chan Ching Laam Jennes' }
+                ],
+                Thu: [
+                    { time: '08:00 - 08:40', name: 'Mathematics', detail: 'Math Teachers' },
+                    { time: '08:40 - 09:20', name: 'Religious Education', detail: 'Lai Chung Hau Herman' },
+                    { time: '09:20 - 10:00', name: 'Block 3 Elective', detail: 'Subject Teachers' },
+                    { time: '10:00 - 10:20', name: 'Morning Recess', detail: 'Break' },
+                    { time: '10:20 - 11:00', name: 'Block 2 Elective', detail: 'Subject Teachers' },
+                    { time: '11:00 - 11:40', name: 'Physical Education', detail: 'Fung Ho Tin' },
+                    { time: '11:40 - 12:20', name: 'Physical Education', detail: 'Fung Ho Tin' },
+                    { time: '12:20 - 13:35', name: 'Lunch Break', detail: 'Lunch' },
+                    { time: '13:35 - 14:15', name: 'BAFS', detail: 'Chan Tze Kit Gary' },
+                    { time: '14:15 - 14:50', name: 'Form Teacher Period', detail: 'Law Oi Lun' },
+                    { time: '14:50 - 15:25', name: 'Form Teacher Period', detail: 'Chan Ching Laam Jennes' }
+                ],
+                Fri: [
+                    { time: '08:00 - 08:40', name: 'BAFS', detail: 'Law Oi Lun' },
+                    { time: '08:40 - 09:20', name: 'Chinese Language', detail: 'Chan Ka Wai' },
+                    { time: '09:20 - 10:00', name: 'Chinese Language', detail: 'Chan Ka Wai' },
+                    { time: '10:00 - 10:20', name: 'Morning Recess', detail: 'Break' },
+                    { time: '10:20 - 11:00', name: 'Block 2 Elective', detail: 'Subject Teachers' },
+                    { time: '11:00 - 11:40', name: 'Mathematics', detail: 'Math Teachers' },
+                    { time: '11:40 - 12:20', name: 'Mathematics', detail: 'Math Teachers' },
+                    { time: '12:20 - 13:35', name: 'Lunch Break', detail: 'Lunch' },
+                    { time: '13:35 - 14:15', name: 'English Language', detail: 'Chan Ching Laam Jennes' },
+                    { time: '14:15 - 14:50', name: 'English Language', detail: 'Chan Ching Laam Jennes' },
+                    { time: '14:50 - 15:25', name: 'Self Study / Form Review', detail: 'Classroom' }
+                ]
+            },
+            2: { // Week 2
+                Mon: [
+                    { time: '08:00 - 08:30', name: 'Form Teacher Period', detail: 'Law Oi Lun' },
+                    { time: '08:30 - 09:10', name: 'Mathematics', detail: 'Math Teachers' },
+                    { time: '09:10 - 09:50', name: 'Mathematics', detail: 'Math Teachers' },
+                    { time: '09:50 - 10:10', name: 'Morning Recess', detail: 'Break' },
+                    { time: '10:10 - 10:50', name: 'Chinese Language', detail: 'Chan Ka Wai' },
+                    { time: '10:50 - 11:30', name: 'Chinese Language', detail: 'Chan Ka Wai' },
+                    { time: '11:30 - 12:10', name: 'Religious Education', detail: 'Lai Chung Hau Herman' },
+                    { time: '12:10 - 13:25', name: 'Lunch Break', detail: 'Lunch' },
+                    { time: '13:25 - 14:05', name: 'CSD', detail: 'Chu Ka Yun Catherine' },
+                    { time: '14:05 - 14:45', name: 'English Language', detail: 'Chan Ching Laam Jennes' },
+                    { time: '14:45 - 15:25', name: 'English Language', detail: 'Chan Ching Laam Jennes' }
+                ],
+                Tue: [
+                    { time: '08:00 - 08:30', name: 'Form Teacher Period', detail: 'Chan Ching Laam Jennes' },
+                    { time: '08:30 - 09:10', name: 'English Language', detail: 'Chan Ching Laam Jennes' },
+                    { time: '09:10 - 09:50', name: 'English Language', detail: 'Chan Ching Laam Jennes' },
+                    { time: '09:50 - 10:10', name: 'Morning Recess', detail: 'Break' },
+                    { time: '10:10 - 10:50', name: 'Chinese Language', detail: 'Chan Ka Wai' },
+                    { time: '10:50 - 11:30', name: 'Chinese Language', detail: 'Chan Ka Wai' },
+                    { time: '11:30 - 12:10', name: 'CSD', detail: 'Chu Ka Yun Catherine' },
+                    { time: '12:10 - 13:25', name: 'Lunch Break', detail: 'Lunch' },
+                    { time: '13:25 - 14:05', name: 'Mathematics', detail: 'Math Teachers' },
+                    { time: '14:05 - 14:45', name: 'Mathematics', detail: 'Math Teachers' },
+                    { time: '14:45 - 15:25', name: 'BAFS', detail: 'Chan Tze Kit Gary' }
+                ],
+                Wed: [
+                    { time: '08:00 - 08:40', name: 'Mathematics', detail: 'Math Teachers' },
+                    { time: '08:40 - 09:20', name: 'Block 3 Elective', detail: 'Subject Teachers' },
+                    { time: '09:20 - 10:00', name: 'Block 3 Elective', detail: 'Subject Teachers' },
+                    { time: '10:00 - 10:20', name: 'Morning Recess', detail: 'Break' },
+                    { time: '10:20 - 11:00', name: 'Block 2 Elective', detail: 'Subject Teachers' },
+                    { time: '11:00 - 11:40', name: 'Block 2 Elective', detail: 'Subject Teachers' },
+                    { time: '11:40 - 12:20', name: 'Chinese Language', detail: 'Chan Ka Wai' },
+                    { time: '12:20 - 13:35', name: 'Lunch Break', detail: 'Lunch' },
+                    { time: '13:35 - 14:15', name: 'BAFS', detail: 'Law Oi Lun' },
+                    { time: '14:15 - 14:50', name: 'English Language', detail: 'Chan Ching Laam Jennes' },
+                    { time: '14:50 - 15:25', name: 'English Language', detail: 'Chan Ching Laam Jennes' }
+                ],
+                Thu: [
+                    { time: '08:00 - 08:40', name: 'Mathematics', detail: 'Math Teachers' },
+                    { time: '08:40 - 09:20', name: 'Block 3 Elective', detail: 'Subject Teachers' },
+                    { time: '09:20 - 10:00', name: 'Chinese Language', detail: 'Chan Ka Wai' },
+                    { time: '10:00 - 10:20', name: 'Morning Recess', detail: 'Break' },
+                    { time: '10:20 - 11:00', name: 'Block 2 Elective', detail: 'Subject Teachers' },
+                    { time: '11:00 - 11:40', name: 'Physical Education', detail: 'Fung Ho Tin' },
+                    { time: '11:40 - 12:20', name: 'Physical Education', detail: 'Fung Ho Tin' },
+                    { time: '12:20 - 13:35', name: 'Lunch Break', detail: 'Lunch' },
+                    { time: '13:35 - 14:15', name: 'Religious Education', detail: 'Lai Chung Hau Herman' },
+                    { time: '14:15 - 14:50', name: 'Form Teacher Period', detail: 'Law Oi Lun' },
+                    { time: '14:50 - 15:25', name: 'Form Teacher Period', detail: 'Chan Ching Laam Jennes' }
+                ],
+                Fri: [
+                    { time: '08:00 - 08:40', name: 'BAFS', detail: 'Law Oi Lun' },
+                    { time: '08:40 - 09:20', name: 'BAFS', detail: 'Law Oi Lun' },
+                    { time: '09:20 - 10:00', name: 'Block 3 Elective', detail: 'Subject Teachers' },
+                    { time: '10:00 - 10:20', name: 'Morning Recess', detail: 'Break' },
+                    { time: '10:20 - 11:00', name: 'CSD', detail: 'Chu Ka Yun Catherine' },
+                    { time: '11:00 - 11:40', name: 'Block 2 Elective', detail: 'Subject Teachers' },
+                    { time: '11:40 - 12:20', name: 'Mathematics', detail: 'Math Teachers' },
+                    { time: '12:20 - 13:35', name: 'Lunch Break', detail: 'Lunch' },
+                    { time: '13:35 - 14:15', name: 'Service Learning', detail: 'SL Teachers' },
+                    { time: '14:15 - 14:50', name: 'Service Learning', detail: 'SL Teachers' },
+                    { time: '14:50 - 15:25', name: 'Self Study / Reflection', detail: 'Classroom' }
+                ]
+            }
+        };
+
+        const AFTER_SCHOOL_ROUTINES = {
+            // Monday, Thursday, Friday template
+            MonThuFri: [
+                { time: '15:25 - 16:00', title: 'Return + Break', type: 'break', icon: 'fa-house-chimney-user' },
+                { time: '16:00 - 17:00', title: 'Study session 1', type: 'study', icon: 'fa-book-open' },
+                { time: '17:00 - 17:30', title: 'Break', type: 'break', icon: 'fa-mug-hot' },
+                { time: '17:30 - 19:00', title: 'Study Session 2', type: 'study', icon: 'fa-laptop-code' },
+                { time: '19:00 - 20:00', title: 'Dinner', type: 'dinner', icon: 'fa-utensils' },
+                { time: '20:00 - 21:30', title: 'Study session 3', type: 'study', icon: 'fa-pen-ruler', phoneBan: true },
+                { time: '21:30 - 22:30', title: 'Run + Shower', type: 'health', icon: 'fa-person-running' },
+                { time: '22:30 - 24:00', title: 'Study session 4', type: 'study', icon: 'fa-brain' }
+            ],
+            // Tuesday template
+            Tue: [
+                { time: '15:25 - 16:00', title: 'Return + Break', type: 'break', icon: 'fa-house-chimney-user' },
+                { time: '16:00 - 16:45', title: 'Transportation', type: 'transit', icon: 'fa-bus' },
+                { time: '16:45 - 18:30', title: '一撇中文', type: 'tutoring', icon: 'fa-file-pen' },
+                { time: '18:30 - 20:15', title: 'Dinner + Transportation', type: 'dinner', icon: 'fa-bowl-food' },
+                { time: '20:15 - 21:45', title: 'Study session 1', type: 'study', icon: 'fa-book' },
+                { time: '21:45 - 22:15', title: 'Break + Shower', type: 'health', icon: 'fa-shower', phoneBan: true },
+                { time: '22:15 - 24:00', title: 'Study session 2', type: 'study', icon: 'fa-graduation-cap' }
+            ],
+            // Wednesday template
+            Wed: [
+                { time: '15:25 - 18:00', title: 'Archery 🏹', type: 'activity', icon: 'fa-bullseye' },
+                { time: '18:00 - 18:30', title: 'Break', type: 'break', icon: 'fa-cookie-bite' },
+                { time: '18:30 - 19:00', title: 'Study session 1', type: 'study', icon: 'fa-book-open' },
+                { time: '19:00 - 20:00', title: 'Dinner', type: 'dinner', icon: 'fa-utensils' },
+                { time: '20:00 - 21:30', title: 'Study session 2', type: 'study', icon: 'fa-pen-ruler' },
+                { time: '21:30 - 22:00', title: 'Break + Shower', type: 'health', icon: 'fa-shower' },
+                { time: '22:00 - 23:30', title: 'Study session 3', type: 'study', icon: 'fa-lightbulb' },
+                { time: '23:30 - 24:00', title: 'Reading 📘', type: 'reading', icon: 'fa-book-bookmark' }
+            ]
+        };
+
+        // Category style lookup
+        const TYPE_STYLES = {
+            school: { bg: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-900', badge: 'bg-blue-100 text-blue-800' },
+            study: { bg: 'bg-amber-50/80', border: 'border-amber-200', text: 'text-amber-950', badge: 'bg-amber-100 text-amber-800' },
+            tutoring: { bg: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-900', badge: 'bg-purple-100 text-purple-800' },
+            activity: { bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-900', badge: 'bg-emerald-100 text-emerald-800' },
+            health: { bg: 'bg-teal-50', border: 'border-teal-200', text: 'text-teal-900', badge: 'bg-teal-100 text-teal-800' },
+            dinner: { bg: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-900', badge: 'bg-orange-100 text-orange-800' },
+            break: { bg: 'bg-slate-50', border: 'border-slate-200', text: 'text-slate-800', badge: 'bg-slate-200 text-slate-700' },
+            transit: { bg: 'bg-sky-50', border: 'border-sky-200', text: 'text-sky-900', badge: 'bg-sky-100 text-sky-800' },
+            reading: { bg: 'bg-indigo-50', border: 'border-indigo-200', text: 'text-indigo-900', badge: 'bg-indigo-100 text-indigo-800' }
+        };
+
+        // Track manually overridden week cycle if user wants
+        let manualWeekOverride = null;
+
+
+        function formatDateKey(dateObj) {
+            const y = dateObj.getFullYear();
+            const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const d = String(dateObj.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
+        }
+
+        // Calculate Week 1 vs Week 2 in LSC 2026-2027 calendar
+        function getSchoolWeekCycle(dateObj) {
+            if (manualWeekOverride !== null) return manualWeekOverride;
+
+            // Anchor Sept 1, 2026 (Tuesday) as Week 1
+            const anchor = new Date(2026, 8, 1); // Sep 1 2026
+            const diffTime = dateObj - anchor;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays < 0) return 1;
+
+            const weekNum = Math.floor(diffDays / 7);
+            return (weekNum % 2 === 0) ? 1 : 2;
+        }
+
+        function checkHoliday(dateStr) {
+            if (HOLIDAYS[dateStr]) return HOLIDAYS[dateStr];
+            for (let range of HOLIDAY_RANGES) {
+                if (dateStr >= range.start && dateStr <= range.end) {
+                    return range.title;
+                }
+            }
+            return null;
+        }
+
+        function checkBlankSportsDay(dateStr) {
+            return BLANK_SPORTS_DAYS[dateStr] || null;
+        }
+
+        function checkOtherEvent(dateStr) {
+            let events = [];
+            if (OTHER_EVENTS[dateStr]) events.push(OTHER_EVENTS[dateStr]);
+            for (let range of EXAM_RANGES) {
+                if (dateStr >= range.start && dateStr <= range.end) {
+                    events.push(range.title);
+                }
+            }
+            return events.join(' • ');
+        }
+
+
+        function renderDailyView() {
+            const dateStr = formatDateKey(currentDate);
+            const dayOfWeek = currentDate.getDay(); // 0 = Sun, 1 = Mon, ..., 6 = Sat
+            const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const dayShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][dayOfWeek];
+            
+            const weekCycle = getSchoolWeekCycle(currentDate);
+
+            // Update UI Date Headers
+            const options = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
+            document.getElementById('display-date-str').innerText = currentDate.toLocaleDateString('en-US', options);
+            document.getElementById('date-picker').value = dateStr;
+            
+            document.getElementById('display-week-cycle').innerText = `Week ${weekCycle}`;
+            
+            const holidayName = checkHoliday(dateStr);
+            const sportsDayName = checkBlankSportsDay(dateStr);
+            const otherEvent = checkOtherEvent(dateStr);
+
+            const eventBanner = document.getElementById('school-event-banner');
+            const eventText = document.getElementById('school-event-text');
+            const blankNotice = document.getElementById('blank-day-notice');
+            const blankTitle = document.getElementById('blank-day-title');
+            const blankSub = document.getElementById('blank-day-sub');
+            const statusBadge = document.getElementById('display-school-status');
+
+            // Event banner update
+            if (otherEvent) {
+                eventBanner.classList.remove('hidden');
+                eventText.innerText = otherEvent;
+            } else {
+                eventBanner.classList.add('hidden');
+            }
+
+            // Determine if School timetable should be BLANK or Holiday
+            let isBlankSchoolDay = false;
+
+            if (dayOfWeek === 0 || dayOfWeek === 6) {
+                statusBadge.innerText = 'Weekend';
+                statusBadge.className = 'cute-badge bg-purple-100 text-purple-800 text-xs border border-purple-200';
+                blankNotice.classList.remove('hidden');
+                blankTitle.innerText = 'Weekend';
+                blankSub.innerText = 'weekend';
+                isBlankSchoolDay = true;
+            } else if (holidayName) {
+                statusBadge.innerText = 'Holiday';
+                statusBadge.className = 'cute-badge bg-rose-100 text-rose-800 text-xs border border-rose-200';
+                blankNotice.classList.remove('hidden');
+                blankTitle.innerText = 'Holiday';
+                blankSub.innerText = 'holiday';
+                isBlankSchoolDay = true;
+            } else if (sportsDayName) {
+                statusBadge.innerText = sportsDayName;
+                statusBadge.className = 'cute-badge bg-amber-100 text-amber-800 text-xs border border-amber-200';
+                blankNotice.classList.remove('hidden');
+                blankTitle.innerText = `🏆 ${sportsDayName}`;
+                blankSub.innerText = 'School schedule is left blank for Sports / Swimming Gala!';
+                isBlankSchoolDay = true;
+            } else {
+                statusBadge.innerText = 'School Day';
+                statusBadge.className = 'cute-badge bg-emerald-100 text-emerald-800 text-xs border border-emerald-200';
+                blankNotice.classList.add('hidden');
+            }
+
+            // Construct Daily Timeline Items
+            let timelineItems = [];
+
+            // 1. School Block (8:00 - 15:25) for Weekdays
+            if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+                if (!isBlankSchoolDay) {
+                    const todayClasses = TIMETABLE_DATA[weekCycle][dayShort] || [];
+                    timelineItems.push({
+                        time: '08:00 - 15:25',
+                        title: 'School (refer to timetable)',
+                        type: 'school',
+                        icon: 'fa-school',
+                        classes: todayClasses,
+                        isSchoolBlock: true
+                    });
+                }
+            }
+
+            // 2. After-School Routine (Mon - Fri strictly, excluding holidays)
+            let routineKey = null;
+            if (!holidayName) {
+                if (dayOfWeek === 1 || dayOfWeek === 4 || dayOfWeek === 5) routineKey = 'MonThuFri';
+                else if (dayOfWeek === 2) routineKey = 'Tue';
+                else if (dayOfWeek === 3) routineKey = 'Wed';
+            }
+
+            const afterSchool = routineKey ? (AFTER_SCHOOL_ROUTINES[routineKey] || []) : [];
+            timelineItems = timelineItems.concat(afterSchool);
+
+            // Render Timeline Blocks HTML
+            const container = document.getElementById('timeline-container');
+            container.innerHTML = '';
+
+            let totalItems = timelineItems.length;
+            let completedItems = 0;
+
+            const savedChecks = JSON.parse(localStorage.getItem(`checks_${dateStr}`) || '{}');
+
+            timelineItems.forEach((item, idx) => {
+                const itemId = `item_${idx}`;
+                const isChecked = savedChecks[itemId] || false;
+                if (isChecked) completedItems++;
+
+                const style = TYPE_STYLES[item.type] || TYPE_STYLES.study;
+
+                let classesAccordionHTML = '';
+                if (item.classes && item.classes.length > 0) {
+                    classesAccordionHTML = `
+                        <div class="mt-3 pt-3 border-t border-blue-200/60">
+                            <button onclick="toggleSchoolDetail('${itemId}')" class="text-xs font-bold text-blue-700 hover:text-blue-900 flex items-center gap-1 mb-2 focus:outline-none">
+                                <i id="icon-accordion-${itemId}" class="fa-solid fa-chevron-down transition-transform"></i> Show 5D Today's Periods (${item.classes.length} periods)
+                            </button>
+                            <div id="detail-${itemId}" class="hidden flex flex-col gap-2 mt-2">
+                                ${item.classes.map(c => `
+                                    <div class="bg-white/80 p-2.5 rounded-xl border border-blue-100 flex items-center justify-between text-xs">
+                                        <div>
+                                            <span class="font-extrabold text-blue-950">${c.name}</span>
+                                            <div class="text-[11px] text-slate-500">${c.detail}</div>
+                                        </div>
+                                        <span class="font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">${c.time}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                let phoneBanHTML = '';
+                if (item.phoneBan) {
+                    phoneBanHTML = `
+                        <div class="phone-ban-banner mt-2.5 p-2 rounded-xl text-xs font-extrabold flex items-center gap-2 animate-pulse">
+                            <i class="fa-solid fa-mobile-retro-slash text-base"></i>
+                            <span>NO MORE PHONE!! 📱🚫 Put your phone away and focus!</span>
+                        </div>
+                    `;
+                }
+
+                const cardHTML = `
+                    <div class="cute-card p-4 transition-all hover:shadow-md ${style.bg} ${style.border} ${isChecked ? 'opacity-65 grayscale-[30%]' : ''}">
+                        <div class="flex items-start justify-between gap-3">
+                            <div class="flex items-start gap-3.5">
+                                <button onclick="toggleCheck('${dateStr}', '${itemId}')" class="mt-0.5 w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all ${isChecked ? 'bg-emerald-500 border-emerald-500 text-white' : 'bg-white border-slate-300 text-transparent hover:border-amber-400'}">
+                                    <i class="fa-solid fa-check text-xs"></i>
+                                </button>
+                                <div>
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                        <span class="text-xs font-bold ${style.badge} px-2.5 py-0.5 rounded-full border">
+                                            <i class="fa-solid ${item.icon}"></i> ${item.time}
+                                        </span>
+                                    </div>
+                                    <h4 class="text-base font-extrabold text-slate-800 mt-1 ${isChecked ? 'line-through text-slate-500' : ''}">${item.title}</h4>
+                                </div>
+                            </div>
+                        </div>
+                        ${phoneBanHTML}
+                        ${classesAccordionHTML}
+                    </div>
+                `;
+                container.innerHTML += cardHTML;
+            });
+
+            // Update Progress Bar
+            document.getElementById('progress-text').innerText = `${completedItems} of ${totalItems} activities completed`;
+            const pct = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
+            document.getElementById('progress-bar').style.width = `${pct}%`;
+
+            // Load Saved Daily Notes
+            const savedNotes = localStorage.getItem(`notes_${dateStr}`) || '';
+            document.getElementById('daily-notes-input').value = savedNotes;
+        }
+
+        function toggleSchoolDetail(itemId) {
+            const detail = document.getElementById(`detail-${itemId}`);
+            const icon = document.getElementById(`icon-accordion-${itemId}`);
+            if (detail.classList.contains('hidden')) {
+                detail.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                detail.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function toggleCheck(dateStr, itemId) {
+            const savedChecks = JSON.parse(localStorage.getItem(`checks_${dateStr}`) || '{}');
+            savedChecks[itemId] = !savedChecks[itemId];
+            localStorage.setItem(`checks_${dateStr}`, JSON.stringify(savedChecks));
+            renderDailyView();
+        }
+
+        function saveDailyNotes() {
+            const dateStr = formatDateKey(currentDate);
+            const val = document.getElementById('daily-notes-input').value;
+            localStorage.setItem(`notes_${dateStr}`, val);
+        }
+
+        function changeDate(days) {
+            currentDate.setDate(currentDate.getDate() + days);
+            renderDailyView();
+        }
+
+        function onDatePicked(val) {
+            if (!val) return;
+            const parts = val.split('-');
+            currentDate = new Date(parts[0], parts[1] - 1, parts[2]);
+            renderDailyView();
+        }
+
+        function jumpToToday() {
+            currentDate = new Date();
+            renderDailyView();
+        }
+
+        function toggleCycleOverride() {
+            if (manualWeekOverride === null) {
+                manualWeekOverride = getSchoolWeekCycle(currentDate) === 1 ? 2 : 1;
+            } else {
+                manualWeekOverride = manualWeekOverride === 1 ? 2 : 1;
+            }
+            renderDailyView();
+        }
+
+
+        function renderTimetableGrid() {
+            const container = document.getElementById('timetable-days-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const weekData = TIMETABLE_DATA[timetableWeekView];
+            const dayNames = {
+                Mon: 'Monday',
+                Tue: 'Tuesday',
+                Wed: 'Wednesday',
+                Thu: 'Thursday',
+                Fri: 'Friday'
+            };
+
+            const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+
+            days.forEach(d => {
+                const slots = weekData[d] || [];
+                let slotsHTML = slots.map(slot => {
+                    const isLunch = slot.name.includes('Lunch');
+                    const isRecess = slot.name.includes('Recess');
+                    let bgClass = isLunch ? 'bg-orange-50 border-orange-200 text-orange-900' : (isRecess ? 'bg-amber-50 border-amber-200 text-amber-900' : 'bg-blue-50/70 border-blue-200 text-blue-900');
+                    let icon = isLunch ? 'fa-utensils' : (isRecess ? 'fa-mug-hot' : 'fa-book-open');
+
+                    return `
+                        <div class="flex items-center gap-3 p-3 rounded-xl border ${bgClass} shadow-sm">
+                            <div class="text-xs font-bold px-2.5 py-1 rounded-lg bg-white/80 border border-slate-200 text-slate-700 shrink-0 min-w-[105px] text-center">
+                                ${slot.time}
+                            </div>
+                            <div class="flex-grow">
+                                <div class="font-extrabold text-sm flex items-center gap-2">
+                                    <i class="fa-solid ${icon} text-xs opacity-75"></i> ${slot.name}
+                                </div>
+                                <div class="text-xs text-slate-500 font-semibold mt-0.5">${slot.detail}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                const dayCardHTML = `
+                    <div class="cute-card-blue p-5 space-y-3">
+                        <div class="flex items-center gap-2 pb-2 border-b-2 border-blue-100">
+                            <div class="w-8 h-8 rounded-lg bg-blue-500 text-white flex items-center justify-center font-extrabold text-sm">
+                                ${d}
+                            </div>
+                            <h3 class="text-lg font-extrabold text-slate-800">${dayNames[d]}</h3>
+                            <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200 ml-auto">${slots.length} Periods</span>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            ${slotsHTML}
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += dayCardHTML;
+            });
+        }
+
+        function setTimetableWeek(w) {
+            timetableWeekView = w;
+            document.getElementById('tt-btn-w1').className = w === 1 ? 'px-4 py-2 rounded-lg text-sm font-extrabold transition-all bg-blue-500 text-white shadow-sm' : 'px-4 py-2 rounded-lg text-sm font-extrabold transition-all text-slate-600 hover:text-blue-600';
+            document.getElementById('tt-btn-w2').className = w === 2 ? 'px-4 py-2 rounded-lg text-sm font-extrabold transition-all bg-blue-500 text-white shadow-sm' : 'px-4 py-2 rounded-lg text-sm font-extrabold transition-all text-slate-600 hover:text-blue-600';
+            renderTimetableGrid();
+        }
+
+
+        function renderCalendarEvents() {
+            const container = document.getElementById('calendar-events-list');
+            container.innerHTML = '';
+
+            let allList = [];
+
+            // Add Holidays
+            Object.keys(HOLIDAYS).forEach(d => {
+                allList.push({ date: d, title: HOLIDAYS[d], category: 'holiday', icon: 'fa-sun', color: 'rose' });
+            });
+            HOLIDAY_RANGES.forEach(r => {
+                allList.push({ date: `${r.start} to ${r.end}`, title: r.title, category: 'holiday', icon: 'fa-umbrella-beach', color: 'rose' });
+            });
+
+            // Add Sports Days
+            Object.keys(BLANK_SPORTS_DAYS).forEach(d => {
+                allList.push({ date: d, title: BLANK_SPORTS_DAYS[d], category: 'sports', icon: 'fa-trophy', color: 'amber' });
+            });
+
+            // Add Other Events
+            Object.keys(OTHER_EVENTS).forEach(d => {
+                const title = OTHER_EVENTS[d];
+                let cat = 'assembly';
+                let icon = 'fa-star';
+                let color = 'blue';
+
+                if (title.includes('Mass') || title.includes('Spiritual') || title.includes('Reconciliation')) {
+                    cat = 'religious';
+                    icon = 'fa-church';
+                    color = 'purple';
+                }
+                allList.push({ date: d, title: title, category: cat, icon: icon, color: color });
+            });
+
+            // Add Exams
+            EXAM_RANGES.forEach(r => {
+                allList.push({ date: `${r.start} to ${r.end}`, title: r.title, category: 'exam', icon: 'fa-file-signature', color: 'indigo' });
+            });
+
+            // Filter logic
+            if (calendarFilter !== 'all') {
+                allList = allList.filter(item => {
+                    if (calendarFilter === 'holiday') return item.category === 'holiday';
+                    if (calendarFilter === 'sports') return item.category === 'sports';
+                    if (calendarFilter === 'exam') return item.category === 'exam';
+                    if (calendarFilter === 'religious') return item.category === 'religious';
+                    return true;
+                });
+            }
+
+            // Sort by start date string
+            allList.sort((a, b) => a.date.localeCompare(b.date));
+
+            allList.forEach(item => {
+                const card = `
+                    <div class="p-3.5 rounded-2xl bg-white border-2 border-slate-100 hover:border-yellow-200 shadow-sm flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-${item.color}-100 text-${item.color}-600 flex items-center justify-center font-bold text-base shrink-0">
+                                <i class="fa-solid ${item.icon}"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-extrabold text-sm text-slate-800">${item.title}</h5>
+                                <span class="text-xs font-bold text-slate-500">${item.date}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += card;
+            });
+        }
+
+        function filterCalendar(cat) {
+            calendarFilter = cat;
+            renderCalendarEvents();
+        }
+
+
+        function switchTab(tab) {
+            activeTab = tab;
+            document.getElementById('view-daily').classList.add('hidden');
+            document.getElementById('view-timetable').classList.add('hidden');
+            document.getElementById('view-calendar').classList.add('hidden');
+
+            document.getElementById('tab-daily').className = 'tab-btn px-4 py-2 rounded-xl text-sm font-bold transition-all text-slate-600 hover:text-blue-600';
+            document.getElementById('tab-timetable').className = 'tab-btn px-4 py-2 rounded-xl text-sm font-bold transition-all text-slate-600 hover:text-blue-600';
+            document.getElementById('tab-calendar').className = 'tab-btn px-4 py-2 rounded-xl text-sm font-bold transition-all text-slate-600 hover:text-blue-600';
+
+            document.getElementById(`view-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-${tab}`).className = 'tab-btn active px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2';
+
+            if (tab === 'timetable') renderTimetableGrid();
+            if (tab === 'calendar') renderCalendarEvents();
+        }
+
+        window.onload = function() {
+            renderDailyView();
+        }
+    </script>
+</body>
+</html>
